@@ -23,7 +23,7 @@ module RailsBreadcrumbs
           end
         end   
     
-        path_parameters = request.path.path_parameters.dup
+        path_parameters = request.path_parameters.dup
         controller = path_parameters.delete :controller
         action = path_parameters.delete :action
         path = request.path.dup
