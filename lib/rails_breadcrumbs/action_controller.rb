@@ -53,7 +53,7 @@ module RailsBreadcrumbs
             end
             @breadcrumbs << {
               :name => t("pages.#{title.join('/').gsub('-', '_')}.title", :locale => I18n.locale), 
-              :path => url_for(path, :locale => I18n.locale)
+              :path => url_for(path)
             }
           end
           index = in_referrer?(path)
