@@ -13,18 +13,16 @@ module RailsBreadcrumbs
         if session[:referer].nil?
           session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]
         elsif is_last_referer?
-          if add_to_referer?
-            session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
-          elsif index = in_referer?
-            session[:referer] = session[:referer].slice(Range.new(0, (index - 1)))    
-            session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
-          else
-            session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
-          end
-        else
           last_index = session[:referer].size - 1
-          session[:referer][last_index] = {:base_url => request.base_url, :path => request.path, :url => request.url}
-        end   
+          session[:referer][last_index][:url] = request.url
+        elsif add_to_referer?
+          session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
+        elsif index = in_referer?
+          session[:referer] = session[:referer].slice(Range.new(0, (index - 1)))    
+          session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
+        else
+          session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
+        end            
         
         path_parts_en = url_for(:locale => :en, :only_path => true).split('/').select{|p|p!=''}
     
@@ -81,7 +79,7 @@ module RailsBreadcrumbs
       
       def is_last_referer?
         last = session[:referer].last
-        last[:base_url] == request.base_url && last[:path] == request.path
+        last[:base_url] == request.base_url and last[:path] == request.path
       end
   
       def add_to_referer?   
