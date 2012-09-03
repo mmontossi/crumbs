@@ -22,7 +22,8 @@ module RailsBreadcrumbs
             session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
           end
         else
-          session[:referer].last = {:base_url => request.base_url, :path => request.path, :url => request.url}
+          last_index = session[:referer].size - 1
+          session[:referer][last_index] = {:base_url => request.base_url, :path => request.path, :url => request.url}
         end   
         
         path_parts_en = url_for(:locale => :en).split('/').select{|p|p!=''}
