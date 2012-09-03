@@ -65,7 +65,7 @@ module RailsBreadcrumbs
           end
           
           index = in_referer?(request.base_url, path)
-          if @breadcrumbs.any? and index
+          if @breadcrumbs.any? and not index.nil?
             @breadcrumbs.last[:url] = session[:referer][index][:url] 
           end        
           
@@ -86,7 +86,7 @@ module RailsBreadcrumbs
   
       def add_to_referer?   
         last = session[:referer].last
-        return false if last[:base_url] == request.base_url
+        return false unless last[:base_url] == request.base_url
         path_parts = request.path.split('/')
         in_tree = last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
         in_tree and request.path != last[:path]
