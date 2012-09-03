@@ -3,7 +3,7 @@ module RailsBreadcrumbs
     module BaseMethods
       
       def self.included(base)
-        base.send :around_filter, :breadcrumbs
+        base.send :prepend_before_filter, :breadcrumbs
       end
 
       protected    
@@ -101,3 +101,5 @@ module RailsBreadcrumbs
     end
   end
 end
+
+ActionController::Base.send :include, RailsBreadcrumbs::ActionController::BaseMethods
