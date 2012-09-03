@@ -3,7 +3,7 @@ module RailsBreadcrumbs
     module BaseMethods
       
       def self.included(base)
-        base.send :after_filter, :breadcrumbs
+        base.send :around_filter, :breadcrumbs
       end
 
       protected    
