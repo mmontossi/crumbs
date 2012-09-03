@@ -26,7 +26,7 @@ module RailsBreadcrumbs
           session[:referer][last_index] = {:base_url => request.base_url, :path => request.path, :url => request.url}
         end   
         
-        path_parts_en = url_for(:locale => :en).split('/').select{|p|p!=''}
+        path_parts_en = url_for(:locale => :en, :only_path => true).split('/').select{|p|p!=''}
     
         path_parts = request.path.split('/').select{|p|p!=''}
         path_parts.pop
@@ -64,7 +64,7 @@ module RailsBreadcrumbs
             }
           end
           
-          index = in_referer?(request.base_url, path)
+          index = in_referer?(path)
           if @breadcrumbs.any? and not index.nil?
             @breadcrumbs.last[:url] = session[:referer][index][:url] 
           end        
@@ -92,9 +92,9 @@ module RailsBreadcrumbs
         in_tree and request.path != last[:path]
       end
 
-      def in_referer?(base_url=request.base_url, path=request.path)
+      def in_referer?(path=request.path)
         session[:referer].index do |referer|
-          referer[:base_url] == base_url and referer[:path] == path
+          referer[:base_url] == request.base_url and referer[:path] == path
         end
       end 
          
