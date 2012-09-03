@@ -101,5 +101,3 @@ module RailsBreadcrumbs
     end
   end
 end
-      
-ActionController::Base.send :include, RailsBreadcrumbs::ActionController::BaseMethods
