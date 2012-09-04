@@ -43,7 +43,7 @@ module RailsBreadcrumbs
           controller = info[:controller]
           action = info[:action]
           
-          if controller == 'dynamic'
+          if controller == 'route'
             route = pattern_parts.first == ':locale' ? path_parts.slice(1, path_parts.size - 1).join('/') : path_parts.join('/')  
             route = Route.where(:route => route, :locale => I18n.locale).first
             @breadcrumbs << {:name => route.routable.name, :url => "#{request.base_url}#{path}"} if route
