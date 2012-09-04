@@ -17,12 +17,12 @@ module RailsBreadcrumbs
           session[:referer][last_index][:url] = request.url
         elsif add_to_referer?
           session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
-        elsif index = in_referer?
-          session[:referer] = session[:referer].slice(Range.new(0, (index - 1)))    
+        elsif index = in_tree_referer?
+          session[:referer] = session[:referer].slice(Range.new(0, index))    
           session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
         else
           session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
-        end            
+        end           
         
         path_parts_en = url_for(:locale => :en, :only_path => true).split('/').select{|p|p!=''}
     
@@ -63,7 +63,7 @@ module RailsBreadcrumbs
           end
           
           index = in_referer?(path)
-          if @breadcrumbs.any? and not index.nil?
+          unless @breadcrumbs.empty? or index.nil?
             @breadcrumbs.last[:url] = session[:referer][index][:url] 
           end        
           
@@ -88,8 +88,22 @@ module RailsBreadcrumbs
         last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
       end
 
-      def in_referer?(path=request.path)
-        session[:referer].index do |referer|
+      def in_tree_referer?
+        path_parts = request.path.split('/')
+        path_parts.pop
+        while path_parts.size > 0
+          index = session[:referer].index do |referer|
+            referer[:base_url] == request.base_url and 
+            referer[:path] == path_parts.join('/') and
+            referer[:path] != request.path
+          end
+          return index unless index.nil?
+          path_parts.pop
+        end        
+      end
+
+      def in_referer?(path)
+        index = session[:referer].index do |referer|
           referer[:base_url] == request.base_url and referer[:path] == path
         end
       end 
