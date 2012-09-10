@@ -85,7 +85,7 @@ module RailsBreadcrumbs
       def add_to_referer?   
         last = session[:referer].last
         path_parts = request.path.split('/')
-        last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
+        path_parts.size > 0 and last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
       end
 
       def in_tree_referer?
