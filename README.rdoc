@@ -1,3 +1,43 @@
-= RailsBreadcrumbs
+= Rails Breadcrumbs
 
-This project rocks and uses MIT-LICENSE.
+Adds a handy breadcrumbs variable available in views with almost no configuration.
+
+= Install
+
+Put this line in your Gemfile:
+  gem 'rails-submit-button', :git => 'git@github.com:mattways/rails-submit-button.git'
+  
+Then bundle:
+  $ bundle  
+  
+= Usage
+
+Choose how the language would be selected in your application.rb...
+
+To use prefix (default):
+  config.i18n_routes.selection = :prefix
+
+To use subdomain:
+  config.i18n_routes.selection = :subdomain
+  config.i18n_routes.mapping = {
+    :es => [:ar, :uy]
+    :pt => [:br]
+  }
+
+In the case of subdomains you need to name the yml file in your locales using this format:
+  es_uy.yml
+  es_ar.yml
+  pt_br.yml
+  
+In the case of static content this gem will look for titles using this kind of i18n paths (any placeholder it's ignored):
+  pages.contact.title
+  pages.categories/edit.title
+  
+Finally in your views would be available a breadcrumbs variable:
+  <div id="breadcrumbs">
+	  <% first = true %>
+    <% @breadcrumbs.each do |breadcrumb| %>
+      <% unless first %> &gt; <% end %><%= link_to breadcrumb[:name], breadcrumb[:url] %>
+      <% first = false %>
+    <% end %>
+	</div>
