@@ -5,7 +5,7 @@ Adds a handy breadcrumbs variable available in views with almost no configuratio
 = Install
 
 Put this line in your Gemfile:
-  gem 'rails-submit-button', :git => 'git@github.com:mattways/rails-submit-button.git'
+  gem 'rails-breadcrumbs', :git => 'git@github.com:mattways/rails-breadcrumbs.git'
   
 Then bundle:
   $ bundle  
@@ -34,10 +34,6 @@ In the case of static content this gem will look for titles using this kind of i
   pages.categories/edit.title
   
 Finally in your views would be available a breadcrumbs variable:
-  <div id="breadcrumbs">
-	  <% first = true %>
-    <% @breadcrumbs.each do |breadcrumb| %>
-      <% unless first %> &gt; <% end %><%= link_to breadcrumb[:name], breadcrumb[:url] %>
-      <% first = false %>
-    <% end %>
-	</div>
+  <% @breadcrumbs.each do |breadcrumb| %>
+    &gt; <%= link_to breadcrumb[:name], breadcrumb[:url] %>
+  <% end %>
