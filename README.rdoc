@@ -12,7 +12,7 @@ Then bundle:
   
 = Usage
   
-In the case of static content this gem will look for titles using this kind of i18n paths (any declared placeholder it's ignored):
+This gem will look for titles using this kind of i18n paths (any declared placeholder it's ignored):
   pages.contact.title
   pages.categories/edit.title
   
