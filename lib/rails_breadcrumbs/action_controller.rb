@@ -6,7 +6,7 @@ module RailsBreadcrumbs
         protected
         
         def breadcrumb(action, name)
-          controller = self.name.gsub('Controller', '').underscore
+          controller = self.name.gsub('::', '').gsub('Controller', '').underscore
           Breadcrumbs.add(controller, action, name)
         end        
         
@@ -26,36 +26,34 @@ module RailsBreadcrumbs
         def breadcrumbs
      
           if session[:referer].nil?
-            session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]
+            session[:referer] = [{:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}]
           elsif is_last_referer?
             last_index = session[:referer].size - 1
-            session[:referer][last_index][:url] = request.url
+            session[:referer][last_index][:fullpath] = request.fullpath
           elsif add_to_referer?
-            session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
+            session[:referer] << {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
           elsif index = in_tree_referer?
             session[:referer] = session[:referer].slice(Range.new(0, index))    
-            session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
+            session[:referer] << {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
           else
-            session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
+            session[:referer] = [{:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}]            
           end        
             
           path_parts = request.path.split('/')
           path_parts.pop      
-          path = "/#{path_parts.join('/')}"
+          path = path_parts.join('/')
         
           @breadcrumbs = []    
           while path_parts.size > 0    
             if params = Rails.application.routes.recognize_path(path) 
               name = Breadcrumbs.get_name(params[:controller], params[:action], params)
               if index = in_referer?(path)
-                url = session[:referer][index][:url]
-              else 
-                url = path
-              end         
-              @breadcrumbs << {:name => name, :url => url}   
+                path = session[:referer][index][:fullpath]
+              end        
+              @breadcrumbs << {:name => name, :path => path}   
             end       
             path_parts.pop      
-            path = "/#{path_parts.join('/')}"
+            path = path_parts.join('/')
           end  
           @breadcrumbs.reverse!    
     

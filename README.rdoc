@@ -20,5 +20,5 @@ You can use a proc if you want, it will receive the corresponding url parameters
   
 Then in your views would be available a breadcrumbs variable:
   <% @breadcrumbs.each do |breadcrumb| %>
-    &gt; <%= link_to breadcrumb[:name], breadcrumb[:url] %>
+    &gt; <%= link_to breadcrumb[:name], breadcrumb[:path] %>
   <% end %>
