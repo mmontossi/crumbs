@@ -1,115 +1,101 @@
 module RailsBreadcrumbs
   module ActionController
-    module BaseMethods
-      
-      def self.included(base)
-        base.send :before_filter, :breadcrumbs
-      end
-
-      protected    
-  
-      def breadcrumbs
-     
-        if session[:referer].nil?
-          session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]
-        elsif is_last_referer?
-          last_index = session[:referer].size - 1
-          session[:referer][last_index][:url] = request.url
-        elsif add_to_referer?
-          session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
-        elsif index = in_tree_referer?
-          session[:referer] = session[:referer].slice(Range.new(0, index))    
-          session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
-        else
-          session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
-        end           
+    module Base
+      module ClassMethods
         
-        path_parts_en = url_for(:locale => :en, :only_path => true).split('/').select{|p|p!=''}
-    
-        path_parts = request.path.split('/').select{|p|p!=''}
-        path_parts.pop
-        path = "/#{path_parts.join('/')}"
+        protected
         
-        pattern = path.dup
-        request.path_parameters.each_pair do |key, value|
-          pattern.gsub! value, ":#{key}" unless [:action, :controller].include? key
+        def breadcrumb(action, name)
+          controller = self.name.gsub('Controller', '').underscore
+          Breadcrumbs.add(controller, action, name)
         end        
-        pattern_parts = pattern.split('/').select{|p|p!=''}
         
-        @breadcrumbs = []    
-        i = 0
-        while path_parts.size > 0    
-          info = Rails.application.routes.recognize_path path 
-          controller = info[:controller]
-          action = info[:action]
-          
-          if controller == 'route'
-            route = pattern_parts.first == ':locale' ? path_parts.slice(1, path_parts.size - 1).join('/') : path_parts.join('/')  
-            route = Route.where(:route => route, :locale => I18n.locale).first
-            @breadcrumbs << {:name => route.routable.name, :url => "#{request.base_url}#{path}"} if route
-          else          
-            title = []
-            if path_parts.size < 2
-              title << 'home'              
-            else
-              path_parts.each_index do |i| 
-                title << path_parts_en[i] unless i == 0 or pattern_parts[i][0] == ':' or pattern_parts[i][0] == '*'
-              end
-            end
-            @breadcrumbs << {
-              :name => t("pages.#{title.join('/').gsub('-', '_')}.title", :locale => I18n.locale), 
-              :url => "#{request.base_url}#{path}"
-            }
-          end
-          
-          index = in_referer?(path)
-          unless @breadcrumbs.empty? or index.nil?
-            @breadcrumbs.last[:url] = session[:referer][index][:url] 
+        def t(key, options = {})
+          I18n.t key, options
+        end
+        
+      end
+      module InstanceMethods
+      
+        def self.included(base)
+          base.send :before_filter, :breadcrumbs
+        end
+
+        protected    
+  
+        def breadcrumbs
+     
+          if session[:referer].nil?
+            session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]
+          elsif is_last_referer?
+            last_index = session[:referer].size - 1
+            session[:referer][last_index][:url] = request.url
+          elsif add_to_referer?
+            session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
+          elsif index = in_tree_referer?
+            session[:referer] = session[:referer].slice(Range.new(0, index))    
+            session[:referer] << {:base_url => request.base_url, :path => request.path, :url => request.url}
+          else
+            session[:referer] = [{:base_url => request.base_url, :path => request.path, :url => request.url}]            
           end        
-          
+            
+          path_parts = request.path.split('/')
           path_parts.pop      
           path = "/#{path_parts.join('/')}"
-          pattern_parts.pop
-          pattern = "/#{pattern_parts.join('/')}"
-          i += 1
-        end  
-        @breadcrumbs.reverse!    
+        
+          @breadcrumbs = []    
+          while path_parts.size > 0    
+            if params = Rails.application.routes.recognize_path(path) 
+              name = Breadcrumbs.get_name(params[:controller], params[:action], params)
+              if index = in_referer?(path)
+                url = session[:referer][index][:url]
+              else 
+                url = path
+              end         
+              @breadcrumbs << {:name => name, :url => url}   
+            end       
+            path_parts.pop      
+            path = "/#{path_parts.join('/')}"
+          end  
+          @breadcrumbs.reverse!    
     
-      end
-      
-      def is_last_referer?
-        last = session[:referer].last
-        last[:base_url] == request.base_url and last[:path] == request.path
-      end
-  
-      def add_to_referer?   
-        last = session[:referer].last
-        path_parts = request.path.split('/')
-        path_parts.size > 0 and last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
-      end
-
-      def in_tree_referer?
-        path_parts = request.path.split('/')
-        path_parts.pop
-        while path_parts.size > 0
-          index = session[:referer].index do |referer|
-            referer[:base_url] == request.base_url and 
-            referer[:path] == path_parts.join('/') and
-            referer[:path] != request.path
-          end
-          return index unless index.nil?
-          path_parts.pop
-        end        
-      end
-
-      def in_referer?(path)
-        index = session[:referer].index do |referer|
-          referer[:base_url] == request.base_url and referer[:path] == path
         end
-      end 
-         
+      
+        def is_last_referer?
+          last = session[:referer].last
+          last[:base_url] == request.base_url and last[:path] == request.path
+        end
+  
+        def add_to_referer?   
+          last = session[:referer].last
+          path_parts = request.path.split('/')
+          path_parts.size > 0 and last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
+        end
+
+        def in_tree_referer?
+          path_parts = request.path.split('/')
+          path_parts.pop
+          while path_parts.size > 0
+            index = session[:referer].index do |referer|
+              referer[:base_url] == request.base_url and 
+              referer[:path] == path_parts.join('/') and
+              referer[:path] != request.path
+            end
+            return index unless index.nil?
+            path_parts.pop
+          end        
+        end
+
+        def in_referer?(path)
+          index = session[:referer].index do |referer|
+            referer[:base_url] == request.base_url and referer[:path] == path
+          end
+        end 
+       
+      end  
     end
   end
 end
 
-ActionController::Base.send :include, RailsBreadcrumbs::ActionController::BaseMethods
+ActionController::Base.send :include, RailsBreadcrumbs::ActionController::Base::InstanceMethods
+ActionController::Base.send :extend, RailsBreadcrumbs::ActionController::Base::ClassMethods

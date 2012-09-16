@@ -12,9 +12,11 @@ Then bundle:
   
 = Usage
   
-This gem will look for titles using this kind of i18n paths (any declared placeholder it's ignored):
-  pages.contact.title
-  pages.categories/edit.title
+In your controllers add breadcrumbs to the actions you want to have a breadcrumb:
+  breadcrumb :home, 'Home'
+
+You can use a proc if you want, it will receive the corresponding url parameters:
+  breadcrumb :product, proc {|params| Product.find(params[:id]).name }
   
 Then in your views would be available a breadcrumbs variable:
   <% @breadcrumbs.each do |breadcrumb| %>
