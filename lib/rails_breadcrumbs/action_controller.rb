@@ -45,7 +45,7 @@ module RailsBreadcrumbs
         
           @breadcrumbs = []    
           while parts.size > 0    
-            if params = Rails.application.routes.recognize_path(path == '/' ? '' : path) 
+            if params = Rails.application.routes.recognize_path(request.base_url + path)
               name = Breadcrumbs.get_name(params[:controller], params[:action], params)
               if index = in_referer?(path)
                 path = session[:referer][index][:fullpath]
