@@ -23,7 +23,7 @@ module RailsBreadcrumbs
 
         protected    
   
-        def breadcrumbs
+        def breadcrumbs    
      
           if session[:referer].nil?
             session[:referer] = [{:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}]
@@ -32,32 +32,36 @@ module RailsBreadcrumbs
             session[:referer][last_index][:fullpath] = request.fullpath
           elsif add_to_referer?
             session[:referer] << {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
-          elsif index = in_tree_referer?
+          elsif index = in_referer_tree?
             session[:referer] = session[:referer].slice(Range.new(0, index))    
             session[:referer] << {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
           else
             session[:referer] = [{:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}]            
-          end        
-            
-          path_parts = request.path.split('/')
-          path_parts.pop      
-          path = path_parts.join('/')
+          end       
+        
+          parts = request.path.split('/')
+          parts.pop 
+          path = join_parts(parts)           
         
           @breadcrumbs = []    
-          while path_parts.size > 0    
+          while parts.size > 0    
             if params = Rails.application.routes.recognize_path(path) 
               name = Breadcrumbs.get_name(params[:controller], params[:action], params)
-              path = (path[0] != '/' ? "/#{path}" : path)
               if index = in_referer?(path)
                 path = session[:referer][index][:fullpath]
               end        
               @breadcrumbs << {:name => name, :path => path}   
             end       
-            path_parts.pop      
-            path = path_parts.join('/')
+            parts.pop      
+            path = join_parts(parts)
           end  
           @breadcrumbs.reverse!    
     
+        end
+        
+        def join_parts(parts)
+          path = parts.join('/')
+          (path[0] != '/' ? "/#{path}" : path)
         end
       
         def is_last_referer?
@@ -67,21 +71,21 @@ module RailsBreadcrumbs
   
         def add_to_referer?   
           last = session[:referer].last
-          path_parts = request.path.split('/')
-          path_parts.size > 0 and last[:path] == path_parts.slice(0, path_parts.size - 1).join('/')
+          parts = request.path.split('/')
+          parts.size > 0 and last[:path] == join_parts(parts.slice(0, parts.size - 1))
         end
 
-        def in_tree_referer?
-          path_parts = request.path.split('/')
-          path_parts.pop
-          while path_parts.size > 0
+        def in_referer_tree?
+          parts = request.path.split('/')
+          parts.pop
+          while parts.size > 0
             index = session[:referer].index do |referer|
               referer[:base_url] == request.base_url and 
-              referer[:path] == path_parts.join('/') and
+              referer[:path] == join_parts(parts) and
               referer[:path] != request.path
             end
             return index unless index.nil?
-            path_parts.pop
+            parts.pop
           end        
         end
 
