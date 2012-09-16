@@ -47,10 +47,11 @@ module RailsBreadcrumbs
           while path_parts.size > 0    
             if params = Rails.application.routes.recognize_path(path) 
               name = Breadcrumbs.get_name(params[:controller], params[:action], params)
+              path = (path[0] != '/' ? "/#{path}" : path)
               if index = in_referer?(path)
                 path = session[:referer][index][:fullpath]
               end        
-              @breadcrumbs << {:name => name, :path => (path[0] != '/' ? "/#{path}" : path)}   
+              @breadcrumbs << {:name => name, :path => path}   
             end       
             path_parts.pop      
             path = path_parts.join('/')
