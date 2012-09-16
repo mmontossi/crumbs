@@ -15,6 +15,7 @@ module RailsBreadcrumbs
       end
   
       def get_name(controller, action, params)
+        return false if all[controller.to_sym].nil?
         name = all[controller.to_sym][action.to_sym]
         case name
         when String
