@@ -6,7 +6,7 @@ module RailsBreadcrumbs
         protected
         
         def breadcrumb(action, name)
-          controller = self.name.gsub('::', '').gsub('Controller', '').underscore
+          controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
           Breadcrumbs.add(controller, action, name)
         end        
         
@@ -46,6 +46,7 @@ module RailsBreadcrumbs
           @breadcrumbs = []    
           while parts.size > 0    
             if params = Rails.application.routes.recognize_path(request.base_url + path)
+              debugger
               if name = Breadcrumbs.get_name(params[:controller], params[:action], params)
                 if index = in_referer?(path)
                   path = session[:referer][index][:fullpath]
