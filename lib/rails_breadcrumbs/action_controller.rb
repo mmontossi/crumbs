@@ -11,7 +11,7 @@ module RailsBreadcrumbs
         end        
         
         def t(key, options = {})
-          I18n.t key, options
+          proc { I18n.t key, options } # I18n.locale it's set after breadcrumb method it's called, so basically it's a hack to call later
         end
         
       end
