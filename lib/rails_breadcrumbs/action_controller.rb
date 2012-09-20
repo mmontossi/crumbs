@@ -1,3 +1,5 @@
+require 'action_controller/metal/exceptions'
+
 module RailsBreadcrumbs
   module ActionController
     module Base
@@ -44,8 +46,13 @@ module RailsBreadcrumbs
           path = join_parts(parts)           
         
           @breadcrumbs = []    
-          while parts.size > 0    
-            if params = Rails.application.routes.recognize_path(request.base_url + path)
+          while parts.size > 0   
+            begin
+              params = Rails.application.routes.recognize_path(request.base_url + path) 
+            rescue ::ActionController::RoutingError => e
+              params = false
+            end
+            if params
               if name = Breadcrumbs.get_name(params[:controller], params[:action], params)
                 if index = in_referer?(path)
                   path = session[:referer][index][:fullpath]
