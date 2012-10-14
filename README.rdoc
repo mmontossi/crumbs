@@ -19,6 +19,5 @@ You can use a proc if you want, it will receive the corresponding url parameters
   breadcrumb :product, proc {|params| Product.find(params[:id]).name }
   
 Then in your views would be available a breadcrumbs variable:
-  <% @breadcrumbs.each do |breadcrumb| %>
-    &gt; <%= link_to breadcrumb[:name], breadcrumb[:path] %>
-  <% end %>
+  - @breadcrumbs.each do |breadcrumb|
+    &gt; = link_to breadcrumb[:name], breadcrumb[:path]
