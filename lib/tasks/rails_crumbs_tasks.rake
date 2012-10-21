@@ -1,4 +1,4 @@
 # desc "Explaining what the task does"
-# task :rails-breadcrumbs do
+# task :rails-crumbs do
 #   # Task goes here
 # end

@@ -1,15 +1,15 @@
 require 'action_controller/metal/exceptions'
 
-module RailsBreadcrumbs
+module RailsCrumbs
   module ActionController
     module Base
       module ClassMethods
         
         protected
         
-        def breadcrumb(action, name)
+        def crumb(action, name)
           controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
-          Breadcrumbs.add(controller, action, name)
+          Crumbs.add(controller, action, name)
         end        
         
         def t(key, options = {})
@@ -20,12 +20,12 @@ module RailsBreadcrumbs
       module InstanceMethods
       
         def self.included(base)
-          base.send :before_filter, :breadcrumbs
+          base.send :before_filter, :crumbs
         end
 
         protected    
   
-        def breadcrumbs    
+        def crumbs    
      
           if session[:referer].nil?
             session[:referer] = [{:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}]
@@ -45,7 +45,7 @@ module RailsBreadcrumbs
           parts.pop 
           path = join_parts(parts)           
         
-          @breadcrumbs = []    
+          @crumbs = []    
           while parts.size > 0   
             begin
               params = Rails.application.routes.recognize_path(request.base_url + path) 
@@ -53,17 +53,17 @@ module RailsBreadcrumbs
               params = false
             end
             if params
-              if name = Breadcrumbs.get_name(params[:controller], params[:action], params)
+              if name = Crumbs.get_name(params[:controller], params[:action], params)
                 if index = in_referer?(path)
                   path = session[:referer][index][:fullpath]
                 end        
-                @breadcrumbs << {:name => name, :path => path}   
+                @crumbs << {:name => name, :path => path}   
               end
             end       
             parts.pop      
             path = join_parts(parts)
           end  
-          @breadcrumbs.reverse!    
+          @crumbs.reverse!    
     
         end
         
@@ -108,5 +108,5 @@ module RailsBreadcrumbs
   end
 end
 
-ActionController::Base.send :include, RailsBreadcrumbs::ActionController::Base::InstanceMethods
-ActionController::Base.send :extend, RailsBreadcrumbs::ActionController::Base::ClassMethods
+ActionController::Base.send :include, RailsCrumbs::ActionController::Base::InstanceMethods
+ActionController::Base.send :extend, RailsCrumbs::ActionController::Base::ClassMethods

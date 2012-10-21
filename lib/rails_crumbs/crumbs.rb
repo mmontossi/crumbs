@@ -1,5 +1,5 @@
-module RailsBreadcrumbs
-  class Breadcrumbs
+module RailsCrumbs
+  class Crumbs
     class << self
     
       def all
