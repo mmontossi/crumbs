@@ -7,7 +7,7 @@ module RailsCrumbs
       end
     
       def add(controller, action, name)
-        if all[controller.to_sym].nil?
+        unless all.has_key? controller.to_sym
           all[controller.to_sym] = {action.to_sym => name}
         else 
           all[controller.to_sym][action.to_sym] = name
@@ -15,7 +15,7 @@ module RailsCrumbs
       end
   
       def get_name(controller, action, params)
-        return false if all[controller.to_sym].nil?
+        return false unless all.has_key? controller.to_sym
         name = all[controller.to_sym][action.to_sym]
         case name
         when String
