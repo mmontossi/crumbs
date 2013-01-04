@@ -29,9 +29,9 @@ module RailsCrumbs
           
           check_referer
     
-          parts = request.path.split('/')
+          path = request.path
+          parts = path.split('/')
           parts.pop 
-          path = join_parts(parts)           
         
           @crumbs = []    
           while parts.size > 0   
@@ -60,22 +60,26 @@ module RailsCrumbs
 
         def check_referer
           if session[:referer].nil?
-            session[:referer] = [request_referer]
+            reset_referer
           elsif is_last_referer?
             last_index = session[:referer].size - 1
             session[:referer][last_index][:fullpath] = request.fullpath
           elsif add_to_referer?
-            session[:referer] << request_referer 
+            add_referer
           elsif index = in_referer_tree?
-            session[:referer] = session[:referer].slice(Range.new(0, index))    
-            session[:referer] << request_referer
+            session[:referer] = session[:referer].slice(Range.new(0, index))
+            add_referer
           else
-            session[:referer] = [request_referer]            
+            reset_referer
           end  
         end
 
-        def request_referer
-          {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
+        def add_referer
+          session[:referer] << {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
+        end
+
+        def reset_referer
+          session[:referer] = [{:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}]   
         end
         
         def join_parts(parts)
