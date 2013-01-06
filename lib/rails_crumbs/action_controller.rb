@@ -26,28 +26,23 @@ module RailsCrumbs
         protected    
   
         def define_crumbs    
-          
           check_referer
-    
-          path = request.path
-          parts = path.split('/')
-          parts.pop 
-        
-          @crumbs = []    
-          while parts.size > 0   
+          parts = request.path.split('/')
+          parts.pop
+          @crumbs = []
+          while parts.size > 0
+            path = join_parts(parts)
             if params = find_path_params(path)
               if name = Crumbs.get_name(params[:controller], params[:action], params)
                 if index = in_referer?(path)
                   path = session[:referer][index][:fullpath]
-                end        
+                end 
                 @crumbs << {:name => name, :path => path}   
               end
             end       
             parts.pop      
-            path = join_parts(parts)
           end  
           @crumbs.reverse!  
-    
         end
 
         def find_path_params(path)
@@ -65,16 +60,16 @@ module RailsCrumbs
             last_index = session[:referer].size - 1
             session[:referer][last_index][:fullpath] = request.fullpath
           elsif add_to_referer?
-            add_referer
+            add_to_referer
           elsif index = in_referer_tree?
             session[:referer] = session[:referer].slice(Range.new(0, index))
-            add_referer
+            add_to_referer
           else
             reset_referer
           end  
         end
 
-        def add_referer
+        def add_to_referer
           session[:referer] << {:base_url => request.base_url, :path => request.path, :fullpath => request.fullpath}
         end
 
@@ -106,7 +101,8 @@ module RailsCrumbs
           parts = request.path.split('/')
           parts.pop
           while parts.size > 0
-            return index = find_in_referer_tree(parts) unless index.nil?
+            index = find_in_referer_tree(parts)            
+            return index unless index.nil?
             parts.pop
           end
         end

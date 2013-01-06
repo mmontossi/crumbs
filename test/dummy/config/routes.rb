@@ -1,4 +1,20 @@
 Dummy::Application.routes.draw do
+
+  root :to => 'test#home'
+
+  match 'static' => 'test#static'
+  match 'static/nested' => 'test#nested'  
+
+  match 'empty' => 'test#empty'
+  match 'empty/nested' => 'test#nested'
+
+  match 'param' => 'test#param'
+  match 'param/:param' => 'test#param'
+  match 'param/:param/nested' => 'test#nested'
+
+  match 'i18n' => 'test#i18n'
+  match 'i18n/nested' => 'test#i18n'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
