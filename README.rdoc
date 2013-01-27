@@ -23,3 +23,8 @@ You can use a proc if you want, will receive the corresponding url parameters:
 Then in your views would be available a crumbs variable:
   - @crumbs.each do |crumb|
     &gt; = link_to crumb[:name], crumb[:path]
+
+= Configuration
+
+If you want to show the last crumb, put this in your application.rb:
+  config.crumbs.show_last = true

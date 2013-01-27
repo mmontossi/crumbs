@@ -13,7 +13,7 @@ Dummy::Application.routes.draw do
   match 'param/:param/nested' => 'test#nested'
 
   match 'i18n' => 'test#i18n'
-  match 'i18n/nested' => 'test#i18n'
+  match 'i18n/nested' => 'test#nested'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

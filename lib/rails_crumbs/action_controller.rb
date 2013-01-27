@@ -28,7 +28,7 @@ module RailsCrumbs
         def define_crumbs    
           check_referer
           parts = request.path.split('/')
-          parts.pop
+          parts.pop unless Rails.application.config.crumbs.show_last
           @crumbs = []
           while parts.size > 0
             path = join_parts(parts)
