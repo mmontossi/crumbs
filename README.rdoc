@@ -1,4 +1,4 @@
-{<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/mattways/rails-crumbs] {<img src="https://travis-ci.org/mattways/rails-crumbs.png?branch=master" alt="Build Status" />}[https://travis-ci.org/mattways/rails-crumbs] {<img src="https://gemnasium.com/mattways/rails-crumbs.png" alt="Dependency Status" />}[https://gemnasium.com/mattways/rails-crumbs]
+{<img src="https://codeclimate.com/github/mattways/rails-crumbs.png" />}[https://codeclimate.com/github/mattways/rails-crumbs] {<img src="https://travis-ci.org/mattways/rails-crumbs.png?branch=master" alt="Build Status" />}[https://travis-ci.org/mattways/rails-crumbs] {<img src="https://gemnasium.com/mattways/rails-crumbs.png" alt="Dependency Status" />}[https://gemnasium.com/mattways/rails-crumbs]
 
 = Rails Crumbs
 
