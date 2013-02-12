@@ -12,10 +12,6 @@ module RailsCrumbs
           Crumbs.add(controller, action, name)
         end        
         
-        def t(key, options = {})
-          proc { I18n.t key, options } 
-        end
-        
       end
       module InstanceMethods
       
