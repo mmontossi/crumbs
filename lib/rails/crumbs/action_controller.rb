@@ -1,15 +1,15 @@
 require 'action_controller/metal/exceptions'
 
-module RailsCrumbs
-  module ActionController
-    module Base
+module Rails
+  module Crumbs
+    module ActionController
       module ClassMethods
         
         protected
         
         def crumb(action, name)
           controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
-          Crumbs.add(controller, action, name)
+          Pages.add(controller, action, name)
         end        
         
       end
@@ -29,7 +29,7 @@ module RailsCrumbs
           while parts.size > 0
             path = join_parts(parts)
             if params = find_path_params(path)
-              if name = Crumbs.get_name(params[:controller], params[:action], params)
+              if name = Pages.get_name(params[:controller], params[:action], params)
                 if index = in_referer?(path)
                   path = session[:referer][index][:fullpath]
                 end 
@@ -121,6 +121,3 @@ module RailsCrumbs
     end
   end
 end
-
-ActionController::Base.send :include, RailsCrumbs::ActionController::Base::InstanceMethods
-ActionController::Base.send :extend, RailsCrumbs::ActionController::Base::ClassMethods
