@@ -1,4 +1,4 @@
-{<img src="https://codeclimate.com/github/mattways/rails-crumbs.png" />}[https://codeclimate.com/github/mattways/rails-crumbs] {<img src="https://travis-ci.org/mattways/rails-crumbs.png?branch=master" alt="Build Status" />}[https://travis-ci.org/mattways/rails-crumbs] {<img src="https://gemnasium.com/mattways/rails-crumbs.png" alt="Dependency Status" />}[https://gemnasium.com/mattways/rails-crumbs]
+{<img src="https://codeclimate.com/github/mattways/rails_crumbs.png" />}[https://codeclimate.com/github/mattways/rails_crumbs] {<img src="https://travis-ci.org/mattways/rails_crumbs.png?branch=master" alt="Build Status" />}[https://travis-ci.org/mattways/rails_crumbs] {<img src="https://gemnasium.com/mattways/rails_crumbs.png" alt="Dependency Status" />}[https://gemnasium.com/mattways/rails_crumbs]
 
 = Rails Crumbs
 
@@ -7,7 +7,7 @@ Adds a handy crumbs variable available in views with almost no configuration.
 = Install
 
 Put this line in your Gemfile:
-  gem 'rails-crumbs'
+  gem 'rails_crumbs'
   
 Then bundle:
   $ bundle  

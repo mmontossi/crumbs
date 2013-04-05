@@ -1,15 +1,15 @@
 $:.push File.expand_path('../lib', __FILE__)
 
 # Maintain your gem's version:
-require 'rails/crumbs/version'
+require 'rails_crumbs/version'
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = 'rails-crumbs'
-  s.version     = Rails::Crumbs::VERSION
+  s.name        = 'rails_crumbs'
+  s.version     = RailsCrumbs::VERSION
   s.authors     = ['Mattways']
   s.email       = ['contact@mattways.com']
-  s.homepage    = 'https://github.com/mattways/rails-crumbs'
+  s.homepage    = 'https://github.com/mattways/rails_crumbs'
   s.summary     = 'Crumbs for Rails.'
   s.description = 'Adds a handy crumbs variable available in views with almost no configuration.'
 

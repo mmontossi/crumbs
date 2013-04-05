@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails-crumbs (1.0.4)
+    rails_crumbs (1.0.5)
       rails (>= 3.2.8)
 
 GEM
@@ -94,5 +94,5 @@ PLATFORMS
 
 DEPENDENCIES
   jquery-rails
-  rails-crumbs!
+  rails_crumbs!
   sqlite3
