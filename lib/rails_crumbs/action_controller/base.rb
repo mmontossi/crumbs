@@ -10,7 +10,7 @@ module RailsCrumbs
         def crumb(action, name)
           controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
           Crumbs.add(controller, action, name)
-        end        
+        end
         
       end
       module InstanceMethods
