@@ -2,28 +2,28 @@ Dummy::Application.routes.draw do
 
   root :to => 'test#home'
 
-  match 'static' => 'test#static'
-  match 'static/nested' => 'test#nested'  
+  get 'static' => 'test#static'
+  get 'static/nested' => 'test#nested'  
 
-  match 'empty' => 'test#empty'
-  match 'empty/nested' => 'test#nested'
+  get 'empty' => 'test#empty'
+  get 'empty/nested' => 'test#nested'
 
-  match 'param' => 'test#param'
-  match 'param/:param' => 'test#param'
-  match 'param/:param/nested' => 'test#nested'
+  get 'param' => 'test#param'
+  get 'param/:param' => 'test#param'
+  get 'param/:param/nested' => 'test#nested'
 
-  match 'i18n' => 'test#i18n'
-  match 'i18n/nested' => 'test#nested'
+  get 'i18n' => 'test#i18n'
+  get 'i18n/nested' => 'test#nested'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
   # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
+  #   get 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+  #   get 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
@@ -70,5 +70,5 @@ Dummy::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
+  # get ':controller(/:action(/:id))(.:format)'
 end
