@@ -63,7 +63,7 @@ module Crumbs
       
       def join_parts(parts)
         path = parts.join('/')
-        (path[0] != '/' ? "/#{path}" : path)
+        path[0] != '/' ? "/#{path}" : path
       end
     
       def is_last_referer?
@@ -109,8 +109,9 @@ module Crumbs
         
         protected
         
-        def crumb(action, name)
+        def crumb(action, name = nil, &block)
           controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
+          name = block_given? ? block : name
           History.add(controller, action, name)
         end
         

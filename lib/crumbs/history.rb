@@ -7,21 +7,24 @@ module Crumbs
       end
     
       def add(controller, action, name)
-        unless all.has_key? controller.to_sym
-          all[controller.to_sym] = { action.to_sym => name }
+        controller = controller.to_sym
+        action = action.to_sym
+        unless all.has_key? controller
+          all[controller] = { action => name }
         else 
-          all[controller.to_sym][action.to_sym] = name
+          all[controller][action] = name
         end
       end
   
       def get_name(controller, action, params)
-        return false unless all.has_key? controller.to_sym and all[controller.to_sym].has_key? action.to_sym
-        name = all[controller.to_sym][action.to_sym]
-        case name
-        when String
-          value = name
-        when Proc
+        controller = controller.to_sym
+        action = action.to_sym
+        return false unless all.has_key? controller and all[controller].has_key? action
+        name = all[controller][action]
+        if name.respond_to? :call
           value = name.call(params)
+        elsif
+          value = name
         end
         value ? value : ''
       end
