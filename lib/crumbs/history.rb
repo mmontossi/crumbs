@@ -1,5 +1,5 @@
-module RailsCrumbs
-  class Crumbs
+module Crumbs
+  class History
     class << self
     
       def all

@@ -1,13 +1,13 @@
-{<img src="https://codeclimate.com/github/mattways/rails_crumbs.png" />}[https://codeclimate.com/github/mattways/rails_crumbs] {<img src="https://travis-ci.org/mattways/rails_crumbs.png?branch=master" alt="Build Status" />}[https://travis-ci.org/mattways/rails_crumbs] {<img src="https://gemnasium.com/mattways/rails_crumbs.png" alt="Dependency Status" />}[https://gemnasium.com/mattways/rails_crumbs]
+{<img src="https://codeclimate.com/github/mattways/crumbs.png" />}[https://codeclimate.com/github/mattways/crumbs] {<img src="https://travis-ci.org/mattways/crumbs.png?branch=master" alt="Build Status" />}[https://travis-ci.org/mattways/crumbs] {<img src="https://gemnasium.com/mattways/crumbs.png" alt="Dependency Status" />}[https://gemnasium.com/mattways/crumbs]
 
-= Rails Crumbs
+= Crumbs
 
-Adds a handy crumbs variable available in views with almost no configuration.
+Adds a handy crumbs variable available in your views.
 
 = Install
 
 Put this line in your Gemfile:
-  gem 'rails_crumbs'
+  gem 'crumbs'
   
 Then bundle:
   $ bundle  
@@ -21,8 +21,9 @@ You can use a proc if you want, will receive the corresponding url parameters:
   crumb :product, proc { |params| Product.find(params[:id]).name }
   
 Then in your views would be available a crumbs variable:
-  - @crumbs.each do |crumb|
-    &gt; = link_to crumb[:name], crumb[:path]
+  <% @crumbs.each do |crumb| %>
+    &gt; <%= link_to crumb[:name], crumb[:path] %>
+  <% end %>
 
 = Configuration
 
