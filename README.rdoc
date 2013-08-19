@@ -17,7 +17,7 @@ Then bundle:
 In your controllers add crumbs to the actions you want to have a crumb:
   crumb :home, 'Home'
 
-You can use a proc if you want, will receive the corresponding url parameters:
+You can use a lambda, proc or block too, will receive the corresponding url parameters:
   crumb :product, proc { |params| Product.find(params[:id]).name }
   
 Then in your views would be available a crumbs variable:
