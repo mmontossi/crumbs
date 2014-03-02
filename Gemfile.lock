@@ -34,13 +34,6 @@ GEM
     arel (4.0.2)
     atomic (1.1.14)
     builder (3.1.4)
-    columnize (0.3.6)
-    debugger (1.6.5)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.3.1)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.3.2)
     erubis (2.7.0)
     hike (1.2.3)
     i18n (0.6.9)
@@ -92,5 +85,4 @@ PLATFORMS
 
 DEPENDENCIES
   crumbs!
-  debugger
   sqlite3
