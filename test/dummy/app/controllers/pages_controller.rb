@@ -4,7 +4,7 @@ class PagesController < ApplicationController
   crumb(:static) { 'Static' }
   crumb :i18n do I18n.t('hello') end
   crumb :nested, ->(params) { 'Nested' }
-  crumb :param, proc { |params| params[:param] }
+  crumb :param, proc { |params| "Param#{params[:param]}" }
 
   def home
     render :crumbs

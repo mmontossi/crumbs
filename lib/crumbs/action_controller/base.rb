@@ -7,114 +7,67 @@ module Crumbs
         before_filter :define_crumbs
       end
 
-      protected    
+      protected 
 
-      def define_crumbs    
-        check_referer
+      def define_crumbs
+        update_referers
         parts = request.path.split('/')
         parts.pop unless Rails.application.config.crumbs.show_last
         @crumbs = []
         while parts.size > 0
-          path = join_parts(parts)
-          if params = find_path_params(path)
-            if name = History.get_name(params[:controller], params[:action], params)
-              if index = in_referer?(path)
-                path = session[:referer][index][:fullpath]
-              end 
-              @crumbs << { name: name, path: path }   
-            end
-          end       
-          parts.pop      
-        end  
-        @crumbs.reverse!  
-      end
-
-      def find_path_params(path)
-        begin
-          Rails.application.routes.recognize_path(request.base_url + path) 
-        rescue
-          false
-        end
-      end
-
-      def check_referer
-        if session[:referer].nil?
-          reset_referer
-        elsif is_last_referer?
-          last_index = session[:referer].size - 1
-          session[:referer][last_index][:fullpath] = request.fullpath
-        elsif add_to_referer?
-          add_to_referer
-        elsif index = in_referer_tree?
-          session[:referer] = session[:referer].slice(Range.new(0, index))
-          add_to_referer
-        else
-          reset_referer
-        end  
-      end
-
-      def add_to_referer
-        session[:referer] << { base_url: request.base_url, path: request.path, fullpath: request.fullpath }
-      end
-
-      def reset_referer
-        session[:referer] = [{ base_url: request.base_url, path: request.path, fullpath: request.fullpath }]   
-      end
-      
-      def join_parts(parts)
-        path = parts.join('/')
-        path[0] != '/' ? "/#{path}" : path
-      end
-    
-      def is_last_referer?
-        last = session[:referer].last
-        last[:base_url] == request.base_url and last[:path] == request.path
-      end
-
-      def add_to_referer?   
-        last = session[:referer].last
-        parts = request.path.split('/')
-        parts.size > 0 and last[:path] == join_parts(parts.slice(0, parts.size - 1))
-      end
-
-      def in_referer?(path)
-        find_in_referer path
-      end
-
-      def in_referer_tree?
-        parts = request.path.split('/')
-        parts.pop
-        while parts.size > 0
-          index = find_in_referer_tree(parts)            
-          return index unless index.nil?
+          if crumb = find_crumb(parts.size == 1 ? '/' : parts.join('/'))
+            @crumbs << crumb
+          end
           parts.pop
         end
+        @crumbs.reverse!
       end
 
-      def find_in_referer(path)
-        session[:referer].index do |referer|
-          referer[:base_url] == request.base_url and referer[:path] == path
-        end
-      end         
-
-      def find_in_referer_tree(parts)
-        session[:referer].index do |referer|
-          referer[:base_url] == request.base_url and 
-          referer[:path] == join_parts(parts) and
-          referer[:path] != request.path
+      def find_crumb(path)
+        params = Rails.application.routes.recognize_path(request.base_url + path) rescue return
+        if name = Crumbs::Definitions.find(params[:controller], params[:action], params)
+          if index = find_referer_index(path)
+            path = referers[index][:fullpath]
+          end
+          { name: name, path: path }
         end
       end
+ 
+      def referers
+        session[:referers] ||= []
+      end
 
+      def referers=(value)
+        session[:referers] = value
+      end
+ 
+      def find_referer_index(path)
+        referers.index { |referer| referer[:base_url] == request.base_url and referer[:path] == path }
+      end
+
+      def update_referers
+        if referers.empty? or index = find_referer_index(request.path) or (referers.last[:path].count('/') == 1 ? '/' : request.path[0...request.path.rindex('/')])
+          if index == 0
+            self.referers = []
+          elsif index
+            self.referers = referers[0...index]
+          end
+          referers << { base_url: request.base_url, path: request.path, fullpath: request.fullpath }
+        else
+          self.referers = [{ base_url: request.base_url, path: request.path, fullpath: request.fullpath }]
+        end
+      end
+ 
       module ClassMethods
-        
+ 
         protected
-        
-        def crumb(action, name = nil, &block)
+ 
+        def crumb(action, name=nil, &block)
           controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
           name = block_given? ? block : name
-          History.add(controller, action, name)
+          Crumbs::Definitions.add controller.to_s, action.to_s, name
         end
-        
+ 
       end
     end
   end

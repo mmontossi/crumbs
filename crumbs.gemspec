@@ -7,9 +7,9 @@ require 'crumbs/version'
 Gem::Specification.new do |s|
   s.name        = 'crumbs'
   s.version     = Crumbs::VERSION
-  s.authors     = ['Mattways']
-  s.email       = ['contact@mattways.com']
-  s.homepage    = 'https://github.com/mattways/crumbs'
+  s.authors     = ['Museways']
+  s.email       = ['hello@museways.com']
+  s.homepage    = 'https://github.com/museways/crumbs'
   s.summary     = 'Crumbs for Rails.'
   s.description = 'Adds a handy crumbs variable available in your views.'
   s.license     = 'MIT'
