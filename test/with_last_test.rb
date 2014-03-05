@@ -11,7 +11,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/"]', 'Home'
     
     get '/static'
     assert_equal [
@@ -37,7 +38,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/"]', 'Home'
   end
 
   test "should remember last request with parameters in the same path" do
@@ -45,7 +47,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
     
     get '/static?p2=p2'
     assert_equal [
@@ -71,7 +74,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/"]', 'Home'
   end
 
   test "gaps should not cause any error and should generate crumbs either" do
@@ -79,7 +83,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
     
     get '/static/nested?p3=p3'
     assert_equal [
@@ -95,7 +100,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/"]', 'Home'
   end
 
   test "empty crumbs should not cause any error and should not generate crumbs" do
@@ -103,7 +109,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
 
     get '/empty?p2=p2'
     assert_equal [
@@ -127,7 +134,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/"]', 'Home'
   end
 
   test "params should not cause any error and can be use alter crumb name" do
@@ -135,7 +143,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
     
     get '/param?p2=p2'
     assert_equal [
@@ -174,7 +183,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/"]', 'Home'
   end
 
   test "going back should not cause any error and should retain history" do
@@ -182,7 +192,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
     
     get '/param?p2=p2'
     assert_equal [
@@ -232,7 +243,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
 
     get '/i18n?p2=p2'
     assert_equal [
@@ -258,7 +270,8 @@ class WithLastTest < ActionDispatch::IntegrationTest
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
     ], session[:referers]
-    assert_select 'a', false
+    assert_select 'a', count: 1
+    assert_select 'a[href="/?p1=p1"]', 'Home'
   end
 
 end
