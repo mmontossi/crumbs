@@ -12,14 +12,15 @@ module Crumbs
       def define_crumbs
         paths = [request.path]
         paths.unshift File.dirname(paths.first) until paths.first == '/'
-        if referers.empty? or referers.last[:base_url] != request.base_url
-          self.referers = [build_referer]
-        elsif request.path.starts_with? "#{referers.last[:path]}/".squeeze('/')
-          self.referers << build_referer
+        referer = { base_url: request.base_url, path: request.path, fullpath: request.fullpath }
+        if session[:referers].nil? or session[:referers].last[:base_url] != request.base_url
+          session[:referers] = [referer]
+        elsif request.path.starts_with? "#{session[:referers].last[:path]}/".squeeze('/')
+          session[:referers] << referer
         elsif index = find_referer_index(paths)
-          self.referers = referers[0...index] + [build_referer]
+          session[:referers] = session[:referers][0...index] + [referer]
         elsif
-          self.referers = [build_referer]
+          session[:referers] = [referer]
         end
         paths.pop unless Rails.application.config.crumbs.show_last
         @crumbs = []
@@ -27,28 +28,16 @@ module Crumbs
           params = Rails.application.routes.recognize_path("#{request.base_url}#{path}") rescue next
           if name = Crumbs::Definitions.find(params[:controller], params[:action], params)
             if index = find_referer_index(path)
-              path = referers[index][:fullpath]
+              path = session[:referers][index][:fullpath]
             end
             @crumbs << { name: name, path: path }
           end
         end
       end
 
-      def referers
-        session[:referers] ||= []
-      end
-
-      def referers=(value)
-        session[:referers] = value
-      end
-
-      def build_referer
-        { base_url: request.base_url, path: request.path, fullpath: request.fullpath }
-      end
- 
       def find_referer_index(paths)
         paths = [paths] unless paths.is_a? Array
-        referers.rindex { |referer| paths.include? referer[:path] }
+        session[:referers].rindex { |referer| paths.include? referer[:path] }
       end
  
       module ClassMethods
