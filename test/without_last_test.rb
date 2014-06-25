@@ -6,7 +6,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     Rails.application.config.crumbs.show_last = false
   end
 
-  test "should remember last requests in the same path" do
+  test "remember last requests in the same path" do
     get '/'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
@@ -38,7 +38,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     assert_select 'a', false
   end
 
-  test "should remember last request with parameters in the same path" do
+  test "remember last request with parameters in the same path" do
     get '/?p1=p1'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
@@ -70,7 +70,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     assert_select 'a', false
   end
 
-  test "gaps should not cause any error and should generate crumbs either" do
+  test "gaps not cause any error and generate crumbs either" do
     get '/?p1=p1'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
@@ -93,7 +93,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     assert_select 'a', false
   end
 
-  test "empty crumbs should not cause any error and should not generate crumbs" do
+  test "empty crumbs not cause any error and not generate crumbs" do
     get '/?p1=p1'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
@@ -124,7 +124,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     assert_select 'a', false
   end
 
-  test "params should not cause any error and can be use alter crumb name" do
+  test "params not cause any error and can be use alter crumb name" do
     get '/?p1=p1'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
@@ -168,7 +168,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     assert_select 'a', false
   end
 
-  test "going back should not cause any error and should retain history" do
+  test "going back not cause any error and retain history" do
     get '/?p1=p1'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }
@@ -214,7 +214,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
     assert_select 'a[href="/?p1=p1"]', 'Home'
   end
 
-  test "translations should not cause any error" do
+  test "translations not cause any error" do
     get '/?p1=p1'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/?p1=p1' }

@@ -39,17 +39,15 @@ module Crumbs
         paths = [paths] unless paths.is_a? Array
         session[:referers].rindex { |referer| paths.include? referer[:path] }
       end
- 
+
       module ClassMethods
- 
+
         protected
- 
+
         def crumb(action, name=nil, &block)
-          controller = self.name.gsub('::', '/').gsub('Controller', '').underscore
-          name = block_given? ? block : name
-          Crumbs::Definitions.add controller.to_s, action.to_s, name
+          Crumbs::Definitions.add controller_path, action.to_s, (block_given? ? block : name)
         end
- 
+
       end
     end
   end
