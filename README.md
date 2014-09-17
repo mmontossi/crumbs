@@ -16,6 +16,20 @@ Then bundle:
 $ bundle
 ```
 
+## Configuration
+
+Generate the configuration file:
+```
+rails g ads:install
+```
+
+The defaults values are:
+```ruby
+Crumbs.configure do |config|
+  config.show_last = false
+end
+```
+
 ## Usage
 
 In your controllers add crumbs to the actions you want:
@@ -35,11 +49,13 @@ Then in your views would be available a crumbs variable:
 <% end %>
 ```
 
-## Configuration
+## Last crumb
 
-If you want to show the last crumb, change the default in your application.rb:
+If you want to show the last crumb, change the default:
 ```ruby
-config.crumbs.show_last = true
+Crumbs.configure do |config|
+  config.crumbs.show_last = true
+end
 ```
 
 ## Credits
