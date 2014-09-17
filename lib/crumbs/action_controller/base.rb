@@ -22,7 +22,7 @@ module Crumbs
         elsif
           session[:referers] = [referer]
         end
-        paths.pop unless Rails.application.config.crumbs.show_last
+        paths.pop unless Crumbs.config.show_last
         @crumbs = []
         paths.each do |path|
           params = Rails.application.routes.recognize_path("#{request.base_url}#{path}") rescue next
