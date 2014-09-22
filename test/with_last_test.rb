@@ -6,7 +6,7 @@ class WithLastTest < ActionDispatch::IntegrationTest
     Crumbs.config.show_last = true
   end
 
-  test 'remember last requests in the same path' do
+  test 'last request in same path' do
     get '/'
     assert_equal [
       { base_url: 'http://www.example.com', path: '/', fullpath: '/' }
