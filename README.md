@@ -20,7 +20,7 @@ $ bundle
 
 Generate the configuration file:
 ```
-rails g ads:install
+rails g crumbs:install
 ```
 
 The defaults values are:
