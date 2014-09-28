@@ -1,4 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/crumbs.svg)](http://badge.fury.io/rb/crumbs) [![Code Climate](https://codeclimate.com/github/museways/crumbs/badges/gpa.svg)](https://codeclimate.com/github/museways/crumbs) [![Build Status](https://travis-ci.org/museways/crumbs.svg?branch=master)](https://travis-ci.org/museways/crumbs)
+[![Gem Version](https://badge.fury.io/rb/crumbs.svg)](http://badge.fury.io/rb/crumbs) [![Code Climate](https://codeclimate.com/github/museways/crumbs/badges/gpa.svg)](https://codeclimate.com/github/museways/crumbs) [![Build Status](https://travis-ci.org/museways/crumbs.svg?branch=master)](https://travis-ci.org/museways/crumbs) [![Dependency Status](https://gemnasium.com/museways/crumbs.svg)](https://gemnasium.com/museways/crumbs)
 
 # Crumbs
 
