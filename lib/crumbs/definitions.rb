@@ -17,7 +17,11 @@ module Crumbs
       def find(controller, action, params)
         if all.has_key? controller and all[controller].has_key? action
           name = all[controller][action]
-          name.is_a?(Proc) ? name.call(params) : name
+          if name.is_a? Proc
+            name.call params
+          else
+            name
+          end
         end
       end
 

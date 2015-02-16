@@ -4,12 +4,12 @@ module Crumbs
       extend ActiveSupport::Concern
 
       included do
-        before_filter :define_crumbs
+        before_filter :set_crumbs
       end
 
       protected 
 
-      def define_crumbs
+      def set_crumbs
         paths = [request.path]
         paths.unshift File.dirname(paths.first) until paths.first == '/'
         referer = { base_url: request.base_url, path: request.path, fullpath: request.fullpath }
@@ -37,7 +37,9 @@ module Crumbs
 
       def find_referer_index(paths)
         paths = [paths] unless paths.is_a? Array
-        session[:referers].rindex { |referer| paths.include? referer[:path] }
+        session[:referers].rindex do |referer|
+          paths.include? referer[:path]
+        end
       end
 
       module ClassMethods
