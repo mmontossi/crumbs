@@ -18,12 +18,12 @@ $ bundle
 
 ## Configuration
 
-Generate the configuration file:
+Generate the initialization file:
 ```
 rails g crumbs:install
 ```
 
-The defaults values are:
+The defaults configuration values are:
 ```ruby
 Crumbs.configure do |config|
   config.show_last = false
@@ -32,14 +32,24 @@ end
 
 ## Usage
 
-In your controllers add crumbs to the actions you want:
+In your initialization file add crumbs referencing the controller and action with the dsl:
 ```ruby
-crumb :home, 'Home'
+Crumbs.define do
+  controller :site do
+    action :home, 'Home'
+  end
+end
 ```
 
 You can use a lambda, proc or block too, will receive the corresponding url parameters:
 ```ruby
-crumb :product, proc { |params| Product.find(params[:id]).name }
+Crumbs.define do
+  controller :site do
+    action :product do |params|
+      Product.find(params[:id]).name
+    end
+  end
+end
 ```
 
 Then in your views would be available a crumbs variable:

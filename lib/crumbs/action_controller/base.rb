@@ -26,7 +26,7 @@ module Crumbs
         @crumbs = []
         paths.each do |path|
           params = Rails.application.routes.recognize_path("#{request.base_url}#{path}") rescue next
-          if name = Crumbs::Definitions.find(params[:controller], params[:action], params)
+          if name = Crumbs.find(params[:controller], params[:action], params)
             if index = find_referer_index(path)
               path = session[:referers][index][:fullpath]
             end
@@ -41,16 +41,7 @@ module Crumbs
           paths.include? referer[:path]
         end
       end
-
-      module ClassMethods
-
-        protected
-
-        def crumb(action, name=nil, &block)
-          Crumbs::Definitions.add controller_path, action.to_s, (block_given? ? block : name)
-        end
-
-      end
     end
+
   end
 end

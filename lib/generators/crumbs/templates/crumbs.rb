@@ -1,2 +1,2 @@
-Crumbs.configure do |config|
+Crumbs.define do
 end
