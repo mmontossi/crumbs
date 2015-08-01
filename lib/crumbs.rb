@@ -1,6 +1,7 @@
 require 'crumbs/action_controller/base'
 require 'crumbs/proxy'
-require 'crumbs/controller'
+require 'crumbs/dsl/namespace'
+require 'crumbs/dsl/controller'
 require 'crumbs/railtie'
 
 module Crumbs
@@ -19,12 +20,12 @@ module Crumbs
     end
 
     def define(&block)
-      Proxy.new.instance_eval &block
+      Proxy.new(&block)
     end
 
     def find(controller, action, params)
-      if all.has_key? controller and all[controller].has_key? action
-        name = all[controller][action]
+      if registry.has_key? controller and registry[controller].has_key? action
+        name = registry[controller][action]
         if name.is_a? Proc
           name.call params
         else
@@ -33,8 +34,18 @@ module Crumbs
       end
     end
 
-    def all
-      @all ||= {}
+    def add(controller, action, name)
+      if registry.has_key? controller
+        registry[controller][action] = name
+      else
+        registry[controller] = { action => name }
+      end
+    end
+
+    protected
+
+    def registry
+      @registry ||= {}
     end
 
   end

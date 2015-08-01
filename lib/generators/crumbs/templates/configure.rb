@@ -1,0 +1,2 @@
+Crumbs.configure do
+end

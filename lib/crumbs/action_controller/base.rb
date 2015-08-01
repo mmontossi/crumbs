@@ -4,7 +4,7 @@ module Crumbs
       extend ActiveSupport::Concern
 
       included do
-        before_filter :set_crumbs
+        append_before_action :set_crumbs
       end
 
       protected 

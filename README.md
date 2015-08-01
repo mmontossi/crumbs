@@ -18,7 +18,7 @@ $ bundle
 
 ## Configuration
 
-Generate the initialization file:
+Generate the initialization and definition files:
 ```
 rails g crumbs:install
 ```
@@ -32,16 +32,23 @@ end
 
 ## Usage
 
-In your initialization file add crumbs referencing the controller and action with the dsl:
+In your config/crumbs.rb file add crumbs referencing the controller and action with the dsl:
 ```ruby
 Crumbs.define do
   controller :site do
     action :home, 'Home'
   end
+  namespace :admin do
+    controller :products do
+      action :index, t('.list')
+    end
+  end
 end
 ```
 
-You can use a lambda, proc or block too, will receive the corresponding url parameters:
+NOTE: Any key passed to the t method starting with a dot will be prepended with 'crumbs.'
+
+You can use a block, will receive the corresponding url parameters:
 ```ruby
 Crumbs.define do
   controller :site do
@@ -61,7 +68,7 @@ Then in your views would be available a crumbs variable:
 
 ## Last crumb
 
-If you want to show the last crumb, change the default:
+If you want to show the last crumb, change the default in your config/initializers/crumbs.rb:
 ```ruby
 Crumbs.configure do |config|
   config.crumbs.show_last = true

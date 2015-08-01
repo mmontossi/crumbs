@@ -1,6 +1,6 @@
 Dummy::Application.routes.draw do
   
-  root to: 'pages#home'
+  root to: 'pages#index'
 
   get 'static', to: 'pages#static'
   get 'static/nested', to: 'pages#nested'  
@@ -14,6 +14,8 @@ Dummy::Application.routes.draw do
 
   get 'i18n', to: 'pages#i18n'
   get 'i18n/nested', to: 'pages#nested'
+
+  get 'namespaced', to: 'namespace/pages#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
