@@ -64,8 +64,8 @@ end
 You can use a block for dynamic names, will receive the corresponding url parameters:
 ```ruby
 Crumbs.define do
-  controller :site do
-    action :product do |params|
+  controller :products do
+    action :show do |params|
       Product.find(params[:id]).name
     end
   end

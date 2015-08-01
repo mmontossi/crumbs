@@ -18,7 +18,7 @@ class WithoutLastTest < ActionDispatch::IntegrationTest
       assert_select 'a', 1
       assert_select 'a[href="/"]:contains("Home")'
     else
-      assert_select 'a', count: 2
+      assert_select 'a', count: 1
       assert_select 'a[href="/"]', 'Home'
     end
   end
