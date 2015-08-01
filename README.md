@@ -36,19 +36,34 @@ In your config/crumbs.rb file add crumbs referencing the controller and action w
 ```ruby
 Crumbs.define do
   controller :site do
-    action :home, 'Home'
+    action :index, 'Home'
   end
+end
+```
+
+To translate names you can use the t method:
+```ruby
+Crumbs.define do
+  controller :site do
+    action :index, t('.home')
+  end
+end
+```
+
+NOTE: Any key passed starting with a dot will be prepended with 'crumbs.'.
+
+If you don't like to prepend the namespace of the controller:
+```ruby
+Crumbs.define do
   namespace :admin do
     controller :products do
-      action :index, t('.list')
+      action :index, 'Products'
     end
   end
 end
 ```
 
-NOTE: Any key passed to the t method starting with a dot will be prepended with 'crumbs.'
-
-You can use a block, will receive the corresponding url parameters:
+You can use a block for dynamic names, will receive the corresponding url parameters:
 ```ruby
 Crumbs.define do
   controller :site do
@@ -56,6 +71,13 @@ Crumbs.define do
       Product.find(params[:id]).name
     end
   end
+end
+```
+
+To disable crumbs for any controller or action:
+```ruby
+class Api::BaseController < ApplicationController
+  skip_before_action :set_crumbs
 end
 ```
 
