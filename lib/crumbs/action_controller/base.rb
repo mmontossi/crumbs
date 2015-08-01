@@ -7,7 +7,7 @@ module Crumbs
         append_before_action :set_crumbs
       end
 
-      protected 
+      protected
 
       def set_crumbs
         paths = [request.path]

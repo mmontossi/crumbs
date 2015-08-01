@@ -8,7 +8,7 @@ module Crumbs
       end
 
       def controller(name, &block)
-        Controller.new("#{@namsepace}/#{name}", &block)
+        Controller.new("#{@namespace}/#{name}", &block)
       end
 
     end

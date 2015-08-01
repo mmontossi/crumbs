@@ -6,6 +6,25 @@ class WithLastTest < ActionDispatch::IntegrationTest
     Crumbs.config.show_last = true
   end
 
+  test 'namespaced controller' do
+    get '/namespaced'
+    assert_equal(
+      [
+        { base_url: 'http://www.example.com', path: '/namespaced', fullpath: '/namespaced' }
+      ],
+      session[:referers]
+    )
+    if Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR >= 2
+      assert_select 'a', 2
+      assert_select 'a[href="/"]:contains("Home")'
+      assert_select 'a[href="/namespaced"]:contains("Namespaced Home")'
+    else
+      assert_select 'a', count: 2
+      assert_select 'a[href="/"]', 'Home'
+      assert_select 'a[href="/namespaced"]', 'Namespaced Home'
+    end
+  end
+
   test 'last request in same path' do
     get '/'
     assert_equal(
