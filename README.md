@@ -30,7 +30,7 @@ Crumbs.configure do |config|
 end
 ```
 
-## Usage
+## DSL
 
 In your config/crumbs.rb file add crumbs referencing the controller and action with the dsl:
 ```ruby
@@ -41,7 +41,7 @@ Crumbs.define do
 end
 ```
 
-To translate names you can use the t method:
+To translate names you can use the t method (keys starting with dot will be prepended with 'crumbs.'):
 ```ruby
 Crumbs.define do
   controller :site do
@@ -49,8 +49,6 @@ Crumbs.define do
   end
 end
 ```
-
-NOTE: Any key passed starting with a dot will be prepended with 'crumbs.'.
 
 If you don't like to prepend the namespace of the controller:
 ```ruby
@@ -74,6 +72,8 @@ Crumbs.define do
 end
 ```
 
+## Performance
+
 To disable crumbs for any controller or action:
 ```ruby
 class Api::BaseController < ApplicationController
@@ -81,7 +81,9 @@ class Api::BaseController < ApplicationController
 end
 ```
 
-Then in your views would be available a crumbs variable:
+## Views
+
+In your views would be available a crumbs variable:
 ```erb
 <% @crumbs.each do |crumb| %>
   &gt; <%= link_to crumb[:name], crumb[:path] %>
