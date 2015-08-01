@@ -41,7 +41,7 @@ Crumbs.define do
 end
 ```
 
-To translate names you can use the t method (keys starting with dot will be prepended with 'crumbs.'):
+To translate names you can use the t method (keys starting with dot are  prepended with 'crumbs.'):
 ```ruby
 Crumbs.define do
   controller :site do
