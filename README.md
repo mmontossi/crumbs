@@ -1,4 +1,7 @@
-[![Gem Version](https://badge.fury.io/rb/crumbs.svg)](http://badge.fury.io/rb/crumbs) [![Code Climate](https://codeclimate.com/github/museways/crumbs/badges/gpa.svg)](https://codeclimate.com/github/museways/crumbs) [![Build Status](https://travis-ci.org/museways/crumbs.svg?branch=master)](https://travis-ci.org/museways/crumbs) [![Dependency Status](https://gemnasium.com/museways/crumbs.svg)](https://gemnasium.com/museways/crumbs)
+[![Gem Version](https://badge.fury.io/rb/crumbs.svg)](http://badge.fury.io/rb/crumbs)
+[![Code Climate](https://codeclimate.com/github/mmontossi/crumbs/badges/gpa.svg)](https://codeclimate.com/github/mmontossi/crumbs)
+[![Build Status](https://travis-ci.org/mmontossi/crumbs.svg)](https://travis-ci.org/mmontossi/crumbs)
+[![Dependency Status](https://gemnasium.com/mmontossi/crumbs.svg)](https://gemnasium.com/mmontossi/crumbs)
 
 # Crumbs
 
@@ -101,7 +104,7 @@ end
 
 ## Credits
 
-This gem is maintained and funded by [museways](http://museways.com).
+This gem is maintained and funded by [mmontossi](https://github.com/mmontossi).
 
 ## License
 
