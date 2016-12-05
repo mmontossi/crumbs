@@ -26,6 +26,8 @@ Then bundle:
 $ bundle
 ```
 
+NOTE: Because this gem stores queries in session, you may need a gem like redis-store to prevent cookies overflow.
+
 ## Configuration
 
 Generate the configuration file:
@@ -37,21 +39,21 @@ $ bundle exec rails g crumbs:install
 
 ### Definitions
 
-In your config/crumbs.rb file add crumbs referencing the controller and action with the dsl:
+Use the crumb method to define a crumb:
 ```ruby
 Crumbs.define do
   crumb 'pages#index', 'Home'
 end
 ```
 
-To translate names you can use the t shortcut method for "crumbs." keys:
+To translate the name you can use the t shortcut method, will prepend "crumbs" to the key:
 ```ruby
 Crumbs.define do
   crumb 'pages#index', t('.home')
 end
 ```
 
-You can use a block for dynamic names, will receive the corresponding url parameters:
+For dynamic names you can use a block, will receive the corresponding parameters:
 ```ruby
 Crumbs.define do
   crumb 'products#show' do |params|
@@ -74,7 +76,7 @@ end
 
 ### Performance
 
-To disable crumbs for any controller or action:
+To disable crums in some controller:
 ```ruby
 class Api::BaseController < ApplicationController
   skip_before_action :set_crumbs
@@ -83,10 +85,10 @@ end
 
 ### Views
 
-In your views would be available a crumbs variable:
+Crumbs variable will be available in your views:
 ```erb
 <% @crumbs.each do |crumb| %>
-  &gt; <%= link_to crumb[:name], crumb[:path] %>
+  &gt; <%= link_to crumb[:name], crumb[:url] %>
 <% end %>
 ```
 
