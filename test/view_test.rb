@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class CrumbsTest < ActionDispatch::IntegrationTest
+class ViewTest < ActionDispatch::IntegrationTest
 
-  test 'history' do
+  test 'links' do
     get '/'
     assert_equal Hash.new, session[:referers]
     assert_select 'a', count: 1

@@ -1,7 +1,7 @@
 module Crumbs
   class Railtie < Rails::Railtie
 
-    initializer :crumbs do
+    initializer 'crumbs.extensions' do
       ::ActionController::Base.include(
         Crumbs::Extensions::ActionController::Base
       )
