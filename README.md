@@ -5,7 +5,7 @@
 
 # Crumbs
 
-Adds a handy crumbs variable available in your views in rails.
+Handy crumbs variable for rails views.
 
 ## Why
 
