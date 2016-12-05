@@ -54,10 +54,8 @@ end
 You can use a block for dynamic names, will receive the corresponding url parameters:
 ```ruby
 Crumbs.define do
-  controller :products do
-    action :show do |params|
-      Product.find(params[:id]).name
-    end
+  crumb 'products#show' do |params|
+    Product.find(params[:id]).name
   end
 end
 ```
@@ -68,7 +66,7 @@ Crumbs.define do
   namespace :admin do
     controller :users do
       crumb :index, 'Users'
-      crumb :show, 'User'
+      crumb :edit, 'Edit user'
     end
   end
 end
