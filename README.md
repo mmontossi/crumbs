@@ -7,6 +7,13 @@
 
 Adds a handy crumbs variable available in your views in rails.
 
+## Why
+
+I did this gem to:
+
+- Have a dsl separate from the controllers to define crumbs.
+- Make crumbs remember query parameters from previous requests.
+
 ## Install
 
 Put this line in your Gemfile:
@@ -21,46 +28,26 @@ $ bundle
 
 ## Configuration
 
-Generate the initialization and definition files:
+Generate the configuration file:
 ```
-rails g crumbs:install
-```
-
-The defaults configuration values are:
-```ruby
-Crumbs.configure do |config|
-  config.show_last = false
-end
+$ bundle exec rails g crumbs:install
 ```
 
-## DSL
+## Usage
+
+### Definitions
 
 In your config/crumbs.rb file add crumbs referencing the controller and action with the dsl:
 ```ruby
 Crumbs.define do
-  controller :site do
-    action :index, 'Home'
-  end
+  crumb 'pages#index', 'Home'
 end
 ```
 
-To translate names you can use the t method (keys starting with dot are  prepended with 'crumbs.'):
+To translate names you can use the t shortcut method for "crumbs." keys:
 ```ruby
 Crumbs.define do
-  controller :site do
-    action :index, t('.home')
-  end
-end
-```
-
-If you don't like to prepend the namespace of the controller:
-```ruby
-Crumbs.define do
-  namespace :admin do
-    controller :products do
-      action :index, 'Products'
-    end
-  end
+  crumb 'pages#index', t('.home')
 end
 ```
 
@@ -75,7 +62,19 @@ Crumbs.define do
 end
 ```
 
-## Performance
+If you need to add multiple crumbs to the same controller:
+```ruby
+Crumbs.define do
+  namespace :admin do
+    controller :users do
+      crumb :index, 'Users'
+      crumb :show, 'User'
+    end
+  end
+end
+```
+
+### Performance
 
 To disable crumbs for any controller or action:
 ```ruby
@@ -84,22 +83,13 @@ class Api::BaseController < ApplicationController
 end
 ```
 
-## Views
+### Views
 
 In your views would be available a crumbs variable:
 ```erb
 <% @crumbs.each do |crumb| %>
   &gt; <%= link_to crumb[:name], crumb[:path] %>
 <% end %>
-```
-
-## Last crumb
-
-If you want to show the last crumb, change the default in your config/initializers/crumbs.rb:
-```ruby
-Crumbs.configure do |config|
-  config.crumbs.show_last = true
-end
 ```
 
 ## Credits

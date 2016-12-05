@@ -5,13 +5,16 @@ module Crumbs
       instance_eval &block
     end
 
-    %w(
-      namespace
-      controller
-    ).each do |name|
-      define_method name do |*args, &block|
-        DSL.const_get(name.to_s.classify).new(*args, &block)
-      end
+    def namespace(*args, &block)
+      Dsl::Namespace.new *args, &block
+    end
+
+    def controller(*args, &block)
+      Dsl::Controller.new *args, &block
+    end
+
+    def crumb(action, name=nil, &block)
+      Crumbs.definitions.add action, (block_given? ? block : name)
     end
 
   end

@@ -1,21 +1,24 @@
 Crumbs.define do
 
-  namespace :namespace do
-    controller :pages do
-      action :index, 'Namespaced Home'
+  namespace :admin do
+    namespace :reports do
+      controller :deliveries do
+        crumb :index do
+          'deliveries'
+        end
+      end
+    end
+    controller :users do
+      crumb :index, 'users'
     end
   end
 
+  crumb 'admin/users#show' do |params|
+    "user #{params[:id]}"
+  end
+
   controller :pages do
-    action :index, 'Home'
-    action :nested, 'Nested'
-    action :i18n, t('.hello')
-    action :static do
-      t('.static')
-    end
-    action :param do |params|
-      "Param#{params[:param]}"
-    end
+    crumb :index, t('.home')
   end
 
 end
