@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    crumbs (2.2.0)
+    crumbs (4.0.0.0)
       rails (>= 4.2.0, < 4.3.0)
 
 GEM
