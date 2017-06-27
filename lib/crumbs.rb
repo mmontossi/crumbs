@@ -10,7 +10,7 @@ module Crumbs
   class << self
 
     def define(&block)
-      Proxy.new &block
+      Proxy.new(&block)
     end
 
     def definitions

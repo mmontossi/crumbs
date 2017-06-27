@@ -4,7 +4,7 @@ module Crumbs
 
       def initialize(prefix, &block)
         @prefix = prefix
-        instance_eval &block
+        instance_eval(&block)
       end
 
       def crumb(action, name=nil, &block)

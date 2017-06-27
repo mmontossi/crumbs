@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ViewTest < ActionDispatch::IntegrationTest
+class CrumbsTest < ActionDispatch::IntegrationTest
 
   test 'links' do
     get '/'
