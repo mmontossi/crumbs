@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = 'crumbs'
   s.version     = Crumbs::VERSION
   s.authors     = ['mmontossi']
-  s.email       = ['mmontossi@museways.com']
-  s.homepage    = 'https://github.com/mmontossi/crumbs'
+  s.email       = ['hi@museways.com']
+  s.homepage    = 'https://github.com/museways/crumbs'
   s.summary     = 'Crumbs for rails.'
   s.description = 'Handy crumbs variable for rails views.'
   s.license     = 'MIT'
